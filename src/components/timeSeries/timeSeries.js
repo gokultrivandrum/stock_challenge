@@ -1,36 +1,85 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types'
 import Plot from 'react-plotly.js';
+import { TOASTER_MSG } from "../../utils/constants";
 
 
-const TimeSeriesChart = () => {
+const TimeSeriesChart = ({ priceType }) => {
   const { timeSeries } = useSelector(state => state.timeSeries);
   const [data, setData] = useState([]);
-  const convertTimeStamp = ((unixArray) =>{
+  const convertTimeStamp = ((unixArray) => {
     const convertedDateArray = unixArray.map(date => new Date(date * 1000));
     return convertedDateArray;
   })
   useEffect(() => {
     if (timeSeries.length > 0) {
-      const multiData = timeSeries.map(e => ({
-        x: convertTimeStamp(e.financialChartXValues),
-        close: e.financialChartCloseValues,
-        decreasing: { line: { color: 'red' } },
-        high: e.financialChartHighValues,
-        increasing: { line: { color: 'green' } },
-        line: { color: 'rgba(31,119,180,1)' },
-        low: e.financialChartLowValues,
-        open: e.financialChartOpenValues,
-        type: 'candlestick',
-      }));
-      setData(multiData);
+
+      switch (priceType) {
+        case 'open':
+          const openData = timeSeries.map(e => ({
+            x: convertTimeStamp(e.financialChartXValues),
+            decreasing: { line: { color: 'red' } },
+            increasing: { line: { color: 'green' } },
+            line: { color: 'rgba(31,119,180,1)' },
+            open: e.financialChartOpenValues,
+            type: 'candlestick',
+          }))
+          setData(openData);
+          break;
+        case 'close':
+          const closeData = timeSeries.map(e => ({
+            x: convertTimeStamp(e.financialChartXValues),
+            decreasing: { line: { color: 'red' } },
+            increasing: { line: { color: 'green' } },
+            line: { color: 'rgba(31,119,180,1)' },
+            close: e.financialChartCloseValues,
+            type: 'candlestick',
+          }))
+          setData(closeData);
+          break;
+        case 'high':
+          const highData = timeSeries.map(e => ({
+            x: convertTimeStamp(e.financialChartXValues),
+            decreasing: { line: { color: 'red' } },
+            increasing: { line: { color: 'green' } },
+            line: { color: 'rgba(31,119,180,1)' },
+            high: e.financialChartHighValues,
+            type: 'candlestick',
+          }))
+          setData(highData);
+          break;
+        case 'low':
+          const lowData = timeSeries.map(e => ({
+            x: convertTimeStamp(e.financialChartXValues),
+            decreasing: { line: { color: 'red' } },
+            increasing: { line: { color: 'green' } },
+            line: { color: 'rgba(31,119,180,1)' },
+            low: e.financialChartLowValues,
+            type: 'candlestick',
+          }))
+          setData(lowData);
+          break;
+        default:
+          const multiData = timeSeries.map(e => ({
+            x: convertTimeStamp(e.financialChartXValues),
+            close: e.financialChartCloseValues,
+            decreasing: { line: { color: 'red' } },
+            high: e.financialChartHighValues,
+            increasing: { line: { color: 'green' } },
+            line: { color: 'rgba(31,119,180,1)' },
+            low: e.financialChartLowValues,
+            open: e.financialChartOpenValues,
+            type: 'candlestick',
+          }))
+          setData(multiData);
+      }
     }
-  }, [timeSeries])
+
+  }, [timeSeries, priceType]);
 
   return (
     <>
-      {timeSeries ? (
+      {timeSeries && timeSeries.length > 0 ? (
         <Plot
           data={data}
           layout={{
@@ -50,15 +99,10 @@ const TimeSeriesChart = () => {
           }}
           options={{ displaylogo: 'false' }}
         />
-      ) : (
-        <></>)}
+      ) : (<p>{TOASTER_MSG.noData}</p>)}
     </>
 
   );
 };
-
-TimeSeriesChart.propTypes = {
-  timeSeries: PropTypes.object.isRequired
-}
 
 export default TimeSeriesChart;

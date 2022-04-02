@@ -1,22 +1,24 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import TimeSeriesChart from "./timeSeries"
-import {TOASTER_MSG } from "../../utils/constants";
+import { TOASTER_MSG } from "../../utils/constants";
 import { Row, Col, Radio } from "antd";
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
 import { getTimeSeries } from '../../store/timeSeries';
 
 const TimeSeries = () => {
   const [dateValue, onChange] = useState([new Date(), new Date()]);
-  const [priceType, handleSizeChange] = useState('open');
-  const {selectedSymbols}  = useSelector(state => state.selectedParams);
+  const [priceType, handleSizeChange] = useState('');
+  const { selectedSymbols } = useSelector(state => state.selectedParams);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if(dateValue[0] && priceType){
+    if (dateValue[0]) {
       selectedSymbols.forEach(selectedRecord => {
-        dispatch(getTimeSeries({ symbol: selectedRecord.symbol, resolution : '1', from : parseInt((new Date(dateValue[0]).getTime() / 1000).toFixed(0)),
-        to : parseInt((new Date(dateValue[1]).getTime() / 1000).toFixed(0))}));
+        dispatch(getTimeSeries({
+          symbol: selectedRecord.symbol, resolution: '1', from: parseInt((new Date(dateValue[0]).getTime() / 1000).toFixed(0)),
+          to: parseInt((new Date(dateValue[1]).getTime() / 1000).toFixed(0))
+        }));
       });
     }
 
@@ -40,7 +42,7 @@ const TimeSeries = () => {
             <DateRangePicker onChange={onChange} value={dateValue} />
           </Col>
           <Col md={24}>
-            <TimeSeriesChart/>
+            <TimeSeriesChart priceType={priceType} />
           </Col>
         </Row>
 

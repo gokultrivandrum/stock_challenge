@@ -7,14 +7,14 @@ export const MENU_KEYS = {
 };
 
 export const MENU_LABELS = {
-  stockList: "Stock List",
+  stockList: "Stock Listing",
 };
 
 export const TOASTER_MSG = {
   noData: "No data found.",
   success: "Sucessfully data loaded.",
-  prompt: "Please select a symbol.",
-  max: "Maximum  symbols selected.",
+  prompt: "Please select a Company.",
+  max: "Maximum  Company selected.",
   loading: "Loading...",
   progress: 'Action in progress..'
 };

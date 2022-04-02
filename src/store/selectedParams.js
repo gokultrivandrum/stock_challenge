@@ -10,9 +10,7 @@ const slice = createSlice({
   },
   reducers: {
     setSelectedSymbols: (state, action) => {
-      const newPayload = [...state.selectedSymbols];
-        newPayload.push(action.payload)
-        state.selectedSymbols = newPayload;
+        state.selectedSymbols = action.payload;
     },
     setDateSelected: (state, action) => {
       state.dateSelected = action.payload;
