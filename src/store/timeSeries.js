@@ -1,10 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from "axios";
 import { message } from 'antd';
-
-
-export const FINNHUB_API_URL = "https://finnhub.io/api/v1/";
-export const API_KEY = 'c935612ad3ic89vi9bi0';
+import { TOASTER_MSG } from "../utils/constants";
+import { BASE_URL, API_KEY } from "../utils/constants";
+import { TIME_SERIES } from "../utils/endpoints";
 
 // Slice
 const slice = createSlice({
@@ -14,7 +13,6 @@ const slice = createSlice({
   },
   reducers: {
     setTimeSeries: (state, action) => {
-      console.log("Object.keys(action.payload).length", Object.keys(action.payload).length)
       if(Object.keys(action.payload).length !== 0){
         const newPayload = [...state.timeSeries];
         newPayload.push(action.payload)
@@ -30,8 +28,8 @@ export const getTimeSeries = ({ symbol = 'AAPL', resolution = 'D',
 from = parseInt((new Date().getTime() / 1000).toFixed(0)), to = parseInt((new Date().getTime() / 1000).toFixed(0))
 }) => async dispatch => {
   try {
-    message.loading('Action in progress..', 1);
-    const res = await axios.get(`${FINNHUB_API_URL}stock/candle`, {
+    message.loading(TOASTER_MSG.progress, 0);
+    const res = await axios.get(`${BASE_URL}${TIME_SERIES}`, {
       params: {
         token: API_KEY,
         symbol,
@@ -41,10 +39,11 @@ from = parseInt((new Date().getTime() / 1000).toFixed(0)), to = parseInt((new Da
       },
     });
     let financialItem;
+    message.destroy();
 
     if(res.data.s === 'no_data'){
       financialItem = {};
-      message.info("No Data",1);
+      message.info(TOASTER_MSG.noData,1);
       return dispatch(setTimeSeries(financialItem));
     }
     financialItem = {
@@ -55,7 +54,7 @@ from = parseInt((new Date().getTime() / 1000).toFixed(0)), to = parseInt((new Da
       financialChartHighValues: res.data.h,
       financialChartLowValues: res.data.l,
     };
-    message.info('Successfully Data Retrived',1);
+    message.info(TOASTER_MSG.success,1);
     return dispatch(setTimeSeries(financialItem));
   } catch (e) {
     message.info(e.message,1);

@@ -1,2 +1,2 @@
-export const FREE_NOW_LIST = "free-now/vehicles";
-export const SHARE_NOW_LIST = "share-now/vehicles";
+export const SYMBOL_LIST = "stock/symbol?exchange=US";
+export const TIME_SERIES = "stock/candle";

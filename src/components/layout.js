@@ -6,21 +6,19 @@ import { MENU_KEYS, MENU_LABELS } from "../utils/constants";
 const { Header, Content } = Layout;
 
 const CustomLayout = ({ children, onLayoutChanged }) => {
-  const [activeMenu, setActiveMenu] = useState(MENU_KEYS.freeNow);
+  const [activeMenu, setActiveMenu] = useState(MENU_KEYS.stockList);
 
   useEffect(() => {
     onLayoutChanged?.(activeMenu);
   }, [activeMenu, onLayoutChanged]);
 
-  const onMenuChanged = (value) => {
-    const { key } = value;
-    setActiveMenu(key);
-  };
+  // const onMenuChanged = (value) => {
+  //   const { key } = value;
+  //   setActiveMenu(key);
+  // };
 
   const showMenuName = () => {
-    return activeMenu === MENU_KEYS.freeNow
-      ? MENU_LABELS.freeNow
-      : MENU_LABELS.shareNow;
+    return activeMenu === MENU_KEYS.stockList
   };
 
   return (
@@ -29,12 +27,10 @@ const CustomLayout = ({ children, onLayoutChanged }) => {
         <div className="logo" />
         <Menu
           theme="dark"
-          defaultSelectedKeys={MENU_KEYS.freeNow}
+          defaultSelectedKeys={MENU_KEYS.stockList}
           mode="horizontal"
-          onClick={onMenuChanged}
         >
-          <Menu.Item key={MENU_KEYS.freeNow}>{MENU_LABELS.freeNow}</Menu.Item>
-          <Menu.Item key={MENU_KEYS.shareNow}>{MENU_LABELS.shareNow}</Menu.Item>
+          <Menu.Item key={MENU_KEYS.stockList}>{MENU_LABELS.stockList}</Menu.Item>
         </Menu>
       </Header>
       <Content style={{ padding: "0 50px" }}>

@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import TimeSeriesChart from "./timeSeries"
-import { MENU_KEYS } from "../../utils/constants";
+import {TOASTER_MSG } from "../../utils/constants";
 import { Row, Col, Radio } from "antd";
 import DateRangePicker from '@wojtekmaj/react-daterange-picker';
-import selectedParams from "../../store/selectedParams";
 import { getTimeSeries } from '../../store/timeSeries';
 
 const TimeSeries = () => {
@@ -14,7 +13,6 @@ const TimeSeries = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("useEffect", dateValue, priceType, selectedSymbols);
     if(dateValue[0] && priceType){
       selectedSymbols.forEach(selectedRecord => {
         dispatch(getTimeSeries({ symbol: selectedRecord.symbol, resolution : '1', from : parseInt((new Date(dateValue[0]).getTime() / 1000).toFixed(0)),
@@ -27,7 +25,7 @@ const TimeSeries = () => {
 
   return (
     <>
-      {selectedSymbols.length > 0 ? (
+      {selectedSymbols && selectedSymbols.length > 0 ? (
         <Row >
           <Col md={14}>
             <Radio.Group value={priceType}
@@ -46,10 +44,7 @@ const TimeSeries = () => {
           </Col>
         </Row>
 
-      ) : (
-        <p>
-          Please select a stock.
-        </p>)}
+      ) : (<p>{TOASTER_MSG.prompt}</p>)}
     </>
   );
 };

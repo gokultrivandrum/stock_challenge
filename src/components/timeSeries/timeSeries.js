@@ -9,7 +9,6 @@ const TimeSeriesChart = () => {
   const [data, setData] = useState([]);
   const convertTimeStamp = ((unixArray) =>{
     const convertedDateArray = unixArray.map(date => new Date(date * 1000));
-    console.log(convertedDateArray)
     return convertedDateArray;
   })
   useEffect(() => {
@@ -52,9 +51,7 @@ const TimeSeriesChart = () => {
           options={{ displaylogo: 'false' }}
         />
       ) : (
-        <p>
-          Please select a stock.
-        </p>)}
+        <></>)}
     </>
 
   );

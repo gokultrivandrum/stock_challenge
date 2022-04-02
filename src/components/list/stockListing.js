@@ -1,10 +1,10 @@
 import { useState } from "react";
 import 'antd/dist/antd.css';
 import { Table } from 'antd';
-import { getTimeSeries } from '../../store/timeSeries';
 import { updateSelectedSymbols } from '../../store/selectedParams';
 import { useDispatch } from 'react-redux';
 import { message } from 'antd';
+import {TOASTER_MSG } from "../../utils/constants";
 
 const StockListingItem = ({ data }) => {
 
@@ -17,7 +17,7 @@ const StockListingItem = ({ data }) => {
       setSelectedRecords(prev => [...prev, selectedRecordArray]);
       dispatch(updateSelectedSymbols({selectedSymbols:selectedRecord}))
     }else{
-       message.info("Maximum  Symbols Selected",2);
+       message.info(TOASTER_MSG.max,2);
    }
   }
   const columns = [
